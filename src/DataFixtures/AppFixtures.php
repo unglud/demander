@@ -39,13 +39,13 @@ class AppFixtures extends Fixture
 
             $manager->persist($station);
 
-            $equipment = $this->generateEquipment($items, 'station', $maxItemsAmount);
+            $equipment = $this->generateEquipment($items, $maxItemsAmount);
             foreach ($equipment as $item) {
                 $item->setStation($station);
                 $manager->persist($item);
             }
 
-            $transport = $this->generateTransport('station', $maxTransportPerStation);
+            $transport = $this->generateTransport($maxTransportPerStation);
             foreach ($transport as $item) {
                 $item->setStation($station);
                 $manager->persist($item);
@@ -73,15 +73,15 @@ class AppFixtures extends Fixture
             $order->setStartDate($start);
             $order->setEndDate($end);
 
-            $equipment = $this->generateEquipment($items, 'order', $maxItemsPerOrder);
+            $equipment = $this->generateEquipment($items, $maxItemsPerOrder);
             foreach ($equipment as $item) {
                 $order->addEquipment($item);
                 $manager->persist($item);
             }
 
-            $transport = $this->generateTransport('order', 1);
+            $transport = $this->generateTransport(1);
+            $order->setTransport($transport);
             $manager->persist($transport);
-            $order->addTransport($transport);
 
             $manager->persist($order);
         }
@@ -92,7 +92,6 @@ class AppFixtures extends Fixture
 
     private function generateEquipment(
         array $items,
-        string $location,
         int $maxItemsAmount,
     ): array {
         $generator = Factory::create();
@@ -104,7 +103,6 @@ class AppFixtures extends Fixture
             $equipment = new Equipment();
             $equipment->setName($generator->unique()->randomElement($items));
             $equipment->setAmount($generator->numberBetween(1, $maxItemsAmount));
-            $equipment->setLocation($location);
 
             array_push($equipments, $equipment);
         }
@@ -113,7 +111,6 @@ class AppFixtures extends Fixture
     }
 
     private function generateTransport(
-        string $location,
         int $max
     ): array | Transport {
         $generator = Factory::create();
@@ -122,7 +119,6 @@ class AppFixtures extends Fixture
         $transports = [];
         for ($k = 0; $k < $transportLimit; $k++) {
             $transport = new Transport();
-            $transport->setLocation($location);
 
             array_push($transports, $transport);
         }

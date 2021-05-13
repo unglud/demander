@@ -30,11 +30,6 @@ class Equipment
     private $amount;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $location;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Station::class, inversedBy="equipment")
      */
     private $station;

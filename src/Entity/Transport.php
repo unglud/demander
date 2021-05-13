@@ -20,17 +20,12 @@ class Transport
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $location;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Station::class, inversedBy="transports")
      */
     private $station;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="transports")
+     * @ORM\OneToOne(targetEntity=Order::class, mappedBy="transport", cascade={"persist", "remove"})
      */
     private $order;
 
@@ -68,8 +63,13 @@ class Transport
         return $this->order;
     }
 
-    public function setOrder(?Order $order): self
+    public function setOrder(Order $order): self
     {
+        // set the owning side of the relation if necessary
+        if ($order->getTransport() !== $this) {
+            $order->setTransport($this);
+        }
+
         $this->order = $order;
 
         return $this;

@@ -44,14 +44,14 @@ class Order extends Location
     private $equipment;
 
     /**
-     * @ORM\OneToMany(targetEntity=Transport::class, mappedBy="order", orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity=Transport::class, inversedBy="order", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $transports;
+    private $transport;
 
     public function __construct()
     {
         $this->equipment = new ArrayCollection();
-        $this->transports = new ArrayCollection();
     }
 
     public function getStartLocation(): ?Station
@@ -132,38 +132,20 @@ class Order extends Location
         return $this;
     }
 
-    /**
-     * @return Collection|Transport[]
-     */
-    public function getTransports(): Collection
-    {
-        return $this->transports;
-    }
-
-    public function addTransport(Transport $transport): self
-    {
-        if (!$this->transports->contains($transport)) {
-            $this->transports[] = $transport;
-            $transport->setOrder($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTransport(Transport $transport): self
-    {
-        if ($this->transports->removeElement($transport)) {
-            // set the owning side to null (unless already changed)
-            if ($transport->getOrder() === $this) {
-                $transport->setOrder(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function __toString():string
     {
         return $this->getId();
+    }
+
+    public function getTransport(): ?Transport
+    {
+        return $this->transport;
+    }
+
+    public function setTransport(Transport $transport): self
+    {
+        $this->transport = $transport;
+
+        return $this;
     }
 }

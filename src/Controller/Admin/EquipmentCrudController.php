@@ -26,7 +26,6 @@ class EquipmentCrudController extends AbstractCrudController
             IdField::new('id'),
             TextField::new('name'),
             NumberField::new('amount'),
-            ChoiceField::new('location')->setChoices(['Station'=>'station', 'Order'=>'order']),
             AssociationField::new('station'),
             AssociationField::new('order'),
         ];
