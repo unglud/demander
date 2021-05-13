@@ -20,6 +20,7 @@ class TransportCrudController extends AbstractCrudController
         return [
             IdField::new('id'),
             AssociationField::new('station'),
+            AssociationField::new('order')
         ];
     }
 

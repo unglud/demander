@@ -102,7 +102,7 @@ class AppFixtures extends Fixture
         $equipments = [];
         for ($k = 0; $k < $itemsLimit; $k++) {
             $equipment = new Equipment();
-            $equipment->setName($generator->/*unique()->*/randomElement($items));
+            $equipment->setName($generator->unique()->randomElement($items));
             $equipment->setAmount($generator->numberBetween(1, $maxItemsAmount));
             $equipment->setLocation($location);
 

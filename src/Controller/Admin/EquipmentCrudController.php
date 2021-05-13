@@ -28,6 +28,7 @@ class EquipmentCrudController extends AbstractCrudController
             NumberField::new('amount'),
             ChoiceField::new('location')->setChoices(['Station'=>'station', 'Order'=>'order']),
             AssociationField::new('station'),
+            AssociationField::new('order'),
         ];
     }
 
