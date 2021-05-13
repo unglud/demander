@@ -86,6 +86,6 @@ class Order extends Location
 
     public function __toString(): string
     {
-        return $this->getId();
+        return "Order #{$this->getId()}";
     }
 }

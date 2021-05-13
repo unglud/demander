@@ -80,7 +80,7 @@ class Station extends Location
 
     public function __toString(): string
     {
-        return $this->name;
+        return "Station $this->name";
     }
 
     /**

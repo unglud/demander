@@ -26,8 +26,7 @@ class EquipmentCrudController extends AbstractCrudController
             IdField::new('id'),
             TextField::new('name'),
             NumberField::new('amount'),
-            AssociationField::new('station'),
-            AssociationField::new('order'),
+            AssociationField::new('location'),
         ];
     }
 
