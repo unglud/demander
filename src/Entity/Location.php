@@ -7,6 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=LocationRepository::class)
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="location", type="string")
+ * @ORM\DiscriminatorMap({"station"="Station", "order"="Order"})
  */
 abstract class Location
 {
