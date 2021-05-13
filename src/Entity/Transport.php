@@ -34,18 +34,6 @@ class Transport
         return $this->id;
     }
 
-    public function getLocation(): ?string
-    {
-        return $this->location;
-    }
-
-    public function setLocation(string $location): self
-    {
-        $this->location = $location;
-
-        return $this;
-    }
-
     public function getStation(): ?Station
     {
         return $this->station;

@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Equipment;
+use App\Entity\Location;
 use App\Entity\Order;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +15,8 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(ObjectManager $manager): Response
     {
-        $orders = $manager->getRepository(Order::class)->findAll();
+        $orders = $manager->getRepository(Equipment::class)->findAll();
+
         dump($orders);
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
