@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\OrderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,14 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="`order`")
  */
 #[ApiResource]
-class Order
+class Order extends Location
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Station::class, inversedBy="outgoing_orders")
@@ -41,9 +37,14 @@ class Order
      */
     private $end_date;
 
-    public function getId(): ?int
+    /**
+     * @ORM\OneToMany(targetEntity=Equipment::class, mappedBy="orders")
+     */
+    private $equipment;
+
+    public function __construct()
     {
-        return $this->id;
+        $this->equipment = new ArrayCollection();
     }
 
     public function getStartLocation(): ?Station
@@ -90,6 +91,36 @@ class Order
     public function setEndDate(\DateTimeInterface $end_date): self
     {
         $this->end_date = $end_date;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Equipment[]
+     */
+    public function getEquipment(): Collection
+    {
+        return $this->equipment;
+    }
+
+    public function addEquipment(Equipment $equipment): self
+    {
+        if (!$this->equipment->contains($equipment)) {
+            $this->equipment[] = $equipment;
+            $equipment->setOrders($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipment(Equipment $equipment): self
+    {
+        if ($this->equipment->removeElement($equipment)) {
+            // set the owning side to null (unless already changed)
+            if ($equipment->getOrders() === $this) {
+                $equipment->setOrders(null);
+            }
+        }
 
         return $this;
     }

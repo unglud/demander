@@ -12,39 +12,28 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass=StationRepository::class)
  */
 #[ApiResource]
-class Station
+class Station extends Location
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Equipment::class, mappedBy="location_id", orphanRemoval=true)
-     */
-    private $equipment;
-
-    /**
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="start_location")
      */
     private $outgoing_orders;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Equipment::class, mappedBy="stations", orphanRemoval=true)
+     */
+    private $equipment;
 
     public function __construct()
     {
         $this->equipment = new ArrayCollection();
         $this->outgoing_orders = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
+        $this->equipment = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -55,36 +44,6 @@ class Station
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Equipment[]
-     */
-    public function getEquipment(): Collection
-    {
-        return $this->equipment;
-    }
-
-    public function addEquipment(Equipment $equipment): self
-    {
-        if (!$this->equipment->contains($equipment)) {
-            $this->equipment[] = $equipment;
-            $equipment->setLocationId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEquipment(Equipment $equipment): self
-    {
-        if ($this->equipment->removeElement($equipment)) {
-            // set the owning side to null (unless already changed)
-            if ($equipment->getLocationId() === $this) {
-                $equipment->setLocationId(null);
-            }
-        }
 
         return $this;
     }
@@ -122,5 +81,35 @@ class Station
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection|Equipment[]
+     */
+    public function getEquipment(): Collection
+    {
+        return $this->equipment;
+    }
+
+    public function addEquipment(Equipment $equipment): self
+    {
+        if (!$this->equipment->contains($equipment)) {
+            $this->equipment[] = $equipment;
+            $equipment->setStations($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipment(Equipment $equipment): self
+    {
+        if ($this->equipment->removeElement($equipment)) {
+            // set the owning side to null (unless already changed)
+            if ($equipment->getStations() === $this) {
+                $equipment->setStations(null);
+            }
+        }
+
+        return $this;
     }
 }
