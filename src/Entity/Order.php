@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\OrderRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,22 +35,6 @@ class Order extends Location
      * @ORM\Column(type="datetime")
      */
     private $end_date;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Equipment::class, mappedBy="order", orphanRemoval=true)
-     */
-    private $equipment;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Transport::class, inversedBy="order", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $transport;
-
-    public function __construct()
-    {
-        $this->equipment = new ArrayCollection();
-    }
 
     public function getStartLocation(): ?Station
     {
@@ -102,50 +84,8 @@ class Order extends Location
         return $this;
     }
 
-    /**
-     * @return Collection|Equipment[]
-     */
-    public function getEquipment(): Collection
-    {
-        return $this->equipment;
-    }
-
-    public function addEquipment(Equipment $equipment): self
-    {
-        if (!$this->equipment->contains($equipment)) {
-            $this->equipment[] = $equipment;
-            $equipment->setOrder($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEquipment(Equipment $equipment): self
-    {
-        if ($this->equipment->removeElement($equipment)) {
-            // set the owning side to null (unless already changed)
-            if ($equipment->getOrder() === $this) {
-                $equipment->setOrder(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function __toString():string
+    public function __toString(): string
     {
         return $this->getId();
-    }
-
-    public function getTransport(): ?Transport
-    {
-        return $this->transport;
-    }
-
-    public function setTransport(Transport $transport): self
-    {
-        $this->transport = $transport;
-
-        return $this;
     }
 }

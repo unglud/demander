@@ -20,45 +20,25 @@ class Transport
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Station::class, inversedBy="transports")
+     * @ORM\ManyToOne(targetEntity=Location::class, inversedBy="transports")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $station;
+    private $location;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Order::class, mappedBy="transport", cascade={"persist", "remove"})
-     */
-    private $order;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getStation(): ?Station
+    public function getLocation(): ?Location
     {
-        return $this->station;
+        return $this->location;
     }
 
-    public function setStation(?Station $station): self
+    public function setLocation(?Location $location): self
     {
-        $this->station = $station;
-
-        return $this;
-    }
-
-    public function getOrder(): ?Order
-    {
-        return $this->order;
-    }
-
-    public function setOrder(Order $order): self
-    {
-        // set the owning side of the relation if necessary
-        if ($order->getTransport() !== $this) {
-            $order->setTransport($this);
-        }
-
-        $this->order = $order;
+        $this->location = $location;
 
         return $this;
     }

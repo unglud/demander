@@ -30,14 +30,10 @@ class Equipment
     private $amount;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Station::class, inversedBy="equipment")
+     * @ORM\ManyToOne(targetEntity=Location::class, inversedBy="equipment")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $station;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="equipment")
-     */
-    private $order;
+    private $location;
 
     public function getId(): ?int
     {
@@ -68,26 +64,14 @@ class Equipment
         return $this;
     }
 
-    public function getStation(): ?Station
+    public function getLocation(): ?Location
     {
-        return $this->station;
+        return $this->location;
     }
 
-    public function setStation(?Station $station): self
+    public function setLocation(?Location $location): self
     {
-        $this->station = $station;
-
-        return $this;
-    }
-
-    public function getOrder(): ?Order
-    {
-        return $this->order;
-    }
-
-    public function setOrder(?Order $order): self
-    {
-        $this->order = $order;
+        $this->location = $location;
 
         return $this;
     }

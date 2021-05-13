@@ -29,24 +29,10 @@ class Station extends Location
      */
     private $incoming_orders;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Equipment::class, mappedBy="station", orphanRemoval=true)
-     */
-    private $equipment;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Transport::class, mappedBy="station", orphanRemoval=true)
-     */
-    private $transports;
-
-
 
     public function __construct()
     {
-        $this->equipment = new ArrayCollection();
         $this->outgoing_orders = new ArrayCollection();
-        $this->equipment = new ArrayCollection();
-        $this->transports = new ArrayCollection();
         $this->incoming_orders = new ArrayCollection();
     }
 
@@ -95,66 +81,6 @@ class Station extends Location
     public function __toString(): string
     {
         return $this->name;
-    }
-
-    /**
-     * @return Collection|Equipment[]
-     */
-    public function getEquipment(): Collection
-    {
-        return $this->equipment;
-    }
-
-    public function addEquipment(Equipment $equipment): self
-    {
-        if (!$this->equipment->contains($equipment)) {
-            $this->equipment[] = $equipment;
-            $equipment->setStations($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEquipment(Equipment $equipment): self
-    {
-        if ($this->equipment->removeElement($equipment)) {
-            // set the owning side to null (unless already changed)
-            if ($equipment->getStations() === $this) {
-                $equipment->setStations(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Transport[]
-     */
-    public function getTransports(): Collection
-    {
-        return $this->transports;
-    }
-
-    public function addTransport(Transport $transport): self
-    {
-        if (!$this->transports->contains($transport)) {
-            $this->transports[] = $transport;
-            $transport->setStation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTransport(Transport $transport): self
-    {
-        if ($this->transports->removeElement($transport)) {
-            // set the owning side to null (unless already changed)
-            if ($transport->getStation() === $this) {
-                $transport->setStation(null);
-            }
-        }
-
-        return $this;
     }
 
     /**

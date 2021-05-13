@@ -41,13 +41,13 @@ class AppFixtures extends Fixture
 
             $equipment = $this->generateEquipment($items, $maxItemsAmount);
             foreach ($equipment as $item) {
-                $item->setStation($station);
+                $item->setLocation($station);
                 $manager->persist($item);
             }
 
             $transport = $this->generateTransport($maxTransportPerStation);
             foreach ($transport as $item) {
-                $item->setStation($station);
+                $item->setLocation($station);
                 $manager->persist($item);
             }
         }
@@ -80,7 +80,7 @@ class AppFixtures extends Fixture
             }
 
             $transport = $this->generateTransport(1);
-            $order->setTransport($transport);
+            $order->addTransport($transport);
             $manager->persist($transport);
 
             $manager->persist($order);
