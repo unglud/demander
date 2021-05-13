@@ -15,9 +15,9 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(ObjectManager $manager): Response
     {
-        $orders = $manager->getRepository(Equipment::class)->findAll();
+        $order = $manager->getRepository(Order::class)->find(4);
 
-        dump($orders);
+        dump($order);
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
