@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Equipment;
+use App\Entity\Order;
 use App\Entity\Station;
 use App\Entity\Transport;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -16,8 +17,10 @@ class AppFixtures extends Fixture
         $generator = Factory::create();
 
         $maxNumberOfStations = 4;
-        $maxNumberItems = 10;
+        $maxItemsAmount = 10;
+        $maxItemsPerOrder = 2;
         $maxTransportPerStation = 10;
+        $numberOfOrders = 1;
         $items = [
             'Toilet',
             'Bed sheets',
@@ -25,40 +28,105 @@ class AppFixtures extends Fixture
             'Camping table',
             'Chair'
         ];
-        $maxNumberItemsPerStation = count($items);
 
+        $limit = $generator->numberBetween(2, $maxNumberOfStations);
 
-        $limit = $generator->numberBetween(1, $maxNumberOfStations);
-
+        $stations = [];
         for ($i = 0; $i < $limit; $i++) {
             $station = new Station();
             $station->setName($generator->city);
+            array_push($stations, $station);
 
             $manager->persist($station);
-            $reset = true;
 
-            $itemsLimit = $generator->numberBetween(1, $maxNumberItemsPerStation);
-            for ($k = 0; $k < $itemsLimit; $k++) {
-                $equipment = new Equipment();
-                $equipment->setName($generator->unique($reset)->randomElement($items));
-
-                $equipment->setAmount($generator->numberBetween(1, $maxNumberItems));
-                $equipment->setLocation('station');
-                $equipment->setStation($station);
-                $manager->persist($equipment);
-                $reset=false;
+            $equipment = $this->generateEquipment($items, 'station', $maxItemsAmount);
+            foreach ($equipment as $item) {
+                $item->setStation($station);
+                $manager->persist($item);
             }
 
-            $transportLimit = $generator->numberBetween(1, $maxTransportPerStation);
-            for ($k = 0; $k < $transportLimit; $k++) {
-                $transport = new Transport();
-                $transport->setLocation('station');
-                $transport->setStation($station);
-                $manager->persist($transport);
+            $transport = $this->generateTransport('station', $maxTransportPerStation);
+            foreach ($transport as $item) {
+                $item->setStation($station);
+                $manager->persist($item);
+            }
+        }
+
+        for ($k = 0; $k < $numberOfOrders; $k++) {
+
+            $order = new Order();
+
+            [$start, $end] = $generator->randomElements($stations, 2);
+
+            $order->setStartLocation($start);
+            $order->setEndLocation($end);
+
+            $startInFeature = $generator->boolean;
+
+            $startDate = $generator->numberBetween(1, 90) * $startInFeature ? 1 : -1;
+            $interval = $generator->numberBetween(1, 90);
+
+            $start = $generator->dateTimeBetween("$startDate days", "+ $interval days");
+            $end = clone $start;
+            $end->modify("+ $interval days");
+
+            $order->setStartDate($start);
+            $order->setEndDate($end);
+
+            $equipment = $this->generateEquipment($items, 'order', $maxItemsPerOrder);
+            foreach ($equipment as $item) {
+                $order->addEquipment($item);
+                $manager->persist($item);
             }
 
+            $transport = $this->generateTransport('order', 1);
+            $manager->persist($transport);
+            $order->addTransport($transport);
+
+            $manager->persist($order);
         }
 
         $manager->flush();
+    }
+
+
+    private function generateEquipment(
+        array $items,
+        string $location,
+        int $maxItemsAmount,
+    ): array {
+        $generator = Factory::create();
+
+        $itemsLimit = $generator->numberBetween(1, count($items));
+
+        $equipments = [];
+        for ($k = 0; $k < $itemsLimit; $k++) {
+            $equipment = new Equipment();
+            $equipment->setName($generator->/*unique()->*/randomElement($items));
+            $equipment->setAmount($generator->numberBetween(1, $maxItemsAmount));
+            $equipment->setLocation($location);
+
+            array_push($equipments, $equipment);
+        }
+
+        return $equipments;
+    }
+
+    private function generateTransport(
+        string $location,
+        int $max
+    ): array | Transport {
+        $generator = Factory::create();
+        $transportLimit = $generator->numberBetween(1, $max);
+
+        $transports = [];
+        for ($k = 0; $k < $transportLimit; $k++) {
+            $transport = new Transport();
+            $transport->setLocation($location);
+
+            array_push($transports, $transport);
+        }
+
+        return count($transports) < 2 ? $transports[0] : $transports;
     }
 }

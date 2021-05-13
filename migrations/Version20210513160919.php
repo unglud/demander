@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210513141314 extends AbstractMigration
+final class Version20210513160919 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,7 @@ final class Version20210513141314 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE equipment (id INT AUTO_INCREMENT NOT NULL, station_id INT NOT NULL, order_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, amount INT NOT NULL, location VARCHAR(255) NOT NULL, INDEX IDX_D338D58321BDB235 (station_id), INDEX IDX_D338D5838D9F6D38 (order_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE equipment (id INT AUTO_INCREMENT NOT NULL, station_id INT DEFAULT NULL, order_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, amount INT NOT NULL, location VARCHAR(255) NOT NULL, INDEX IDX_D338D58321BDB235 (station_id), INDEX IDX_D338D5838D9F6D38 (order_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE location (id INT AUTO_INCREMENT NOT NULL, location VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE `order` (id INT NOT NULL, start_location_id INT NOT NULL, end_location_id INT NOT NULL, start_date DATETIME NOT NULL, end_date DATETIME NOT NULL, INDEX IDX_F52993985C3A313A (start_location_id), INDEX IDX_F5299398C43C7F1 (end_location_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE station (id INT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');

@@ -20,9 +20,14 @@ class Station extends Location
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="start_location")
+     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="start_location", orphanRemoval=true)
      */
     private $outgoing_orders;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="end_location", orphanRemoval=true)
+     */
+    private $incoming_orders;
 
     /**
      * @ORM\OneToMany(targetEntity=Equipment::class, mappedBy="station", orphanRemoval=true)
@@ -30,14 +35,11 @@ class Station extends Location
     private $equipment;
 
     /**
-     * @ORM\OneToMany(targetEntity=Transport::class, mappedBy="station")
+     * @ORM\OneToMany(targetEntity=Transport::class, mappedBy="station", orphanRemoval=true)
      */
     private $transports;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="end_location", orphanRemoval=true)
-     */
-    private $incoming_orders;
+
 
     public function __construct()
     {

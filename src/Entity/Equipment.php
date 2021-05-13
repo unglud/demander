@@ -36,7 +36,6 @@ class Equipment
 
     /**
      * @ORM\ManyToOne(targetEntity=Station::class, inversedBy="equipment")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $station;
 

@@ -39,12 +39,12 @@ class Order extends Location
     private $end_date;
 
     /**
-     * @ORM\OneToMany(targetEntity=Equipment::class, mappedBy="order")
+     * @ORM\OneToMany(targetEntity=Equipment::class, mappedBy="order", orphanRemoval=true)
      */
     private $equipment;
 
     /**
-     * @ORM\OneToMany(targetEntity=Transport::class, mappedBy="order")
+     * @ORM\OneToMany(targetEntity=Transport::class, mappedBy="order", orphanRemoval=true)
      */
     private $transports;
 
@@ -62,6 +62,18 @@ class Order extends Location
     public function setStartLocation(?Station $start_location): self
     {
         $this->start_location = $start_location;
+
+        return $this;
+    }
+
+    public function getEndLocation(): ?Station
+    {
+        return $this->end_location;
+    }
+
+    public function setEndLocation(?Station $end_location): self
+    {
+        $this->end_location = $end_location;
 
         return $this;
     }
@@ -102,7 +114,7 @@ class Order extends Location
     {
         if (!$this->equipment->contains($equipment)) {
             $this->equipment[] = $equipment;
-            $equipment->setOrders($this);
+            $equipment->setOrder($this);
         }
 
         return $this;
@@ -112,8 +124,8 @@ class Order extends Location
     {
         if ($this->equipment->removeElement($equipment)) {
             // set the owning side to null (unless already changed)
-            if ($equipment->getOrders() === $this) {
-                $equipment->setOrders(null);
+            if ($equipment->getOrder() === $this) {
+                $equipment->setOrder(null);
             }
         }
 
@@ -132,7 +144,7 @@ class Order extends Location
     {
         if (!$this->transports->contains($transport)) {
             $this->transports[] = $transport;
-            $transport->setOrders($this);
+            $transport->setOrder($this);
         }
 
         return $this;
@@ -142,22 +154,10 @@ class Order extends Location
     {
         if ($this->transports->removeElement($transport)) {
             // set the owning side to null (unless already changed)
-            if ($transport->getOrders() === $this) {
-                $transport->setOrders(null);
+            if ($transport->getOrder() === $this) {
+                $transport->setOrder(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getEndLocation(): ?Station
-    {
-        return $this->end_location;
-    }
-
-    public function setEndLocation(?Station $end_location): self
-    {
-        $this->end_location = $end_location;
 
         return $this;
     }
