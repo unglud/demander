@@ -25,15 +25,27 @@ class Station extends Location
     private $outgoing_orders;
 
     /**
-     * @ORM\OneToMany(targetEntity=Equipment::class, mappedBy="stations", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Equipment::class, mappedBy="station", orphanRemoval=true)
      */
     private $equipment;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Transport::class, mappedBy="station")
+     */
+    private $transports;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="end_location", orphanRemoval=true)
+     */
+    private $incoming_orders;
 
     public function __construct()
     {
         $this->equipment = new ArrayCollection();
         $this->outgoing_orders = new ArrayCollection();
         $this->equipment = new ArrayCollection();
+        $this->transports = new ArrayCollection();
+        $this->incoming_orders = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -107,6 +119,66 @@ class Station extends Location
             // set the owning side to null (unless already changed)
             if ($equipment->getStations() === $this) {
                 $equipment->setStations(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Transport[]
+     */
+    public function getTransports(): Collection
+    {
+        return $this->transports;
+    }
+
+    public function addTransport(Transport $transport): self
+    {
+        if (!$this->transports->contains($transport)) {
+            $this->transports[] = $transport;
+            $transport->setStation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransport(Transport $transport): self
+    {
+        if ($this->transports->removeElement($transport)) {
+            // set the owning side to null (unless already changed)
+            if ($transport->getStation() === $this) {
+                $transport->setStation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Order[]
+     */
+    public function getIncomingOrders(): Collection
+    {
+        return $this->incoming_orders;
+    }
+
+    public function addIncomingOrder(Order $incomingOrder): self
+    {
+        if (!$this->incoming_orders->contains($incomingOrder)) {
+            $this->incoming_orders[] = $incomingOrder;
+            $incomingOrder->setEndLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIncomingOrder(Order $incomingOrder): self
+    {
+        if ($this->incoming_orders->removeElement($incomingOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($incomingOrder->getEndLocation() === $this) {
+                $incomingOrder->setEndLocation(null);
             }
         }
 
