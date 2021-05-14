@@ -16,6 +16,7 @@
         "easycorp/easyadmin-bundle": "^3.3",
         "nelmio/cors-bundle": "^2.1",
         "phpdocumentor/reflection-docblock": "^5.2",
+        "sensio/framework-extra-bundle": "^6.1",
         "symfony/asset": "5.2.*",
         "symfony/console": "5.2.*",
         "symfony/debug-bundle": "5.2.*",

@@ -7,6 +7,7 @@ import {
   MDBTableBody,
 } from "mdb-react-ui-kit";
 import React from "react";
+import { Link } from "react-router-dom";
 
 export interface StationI {
   id: number;
@@ -30,7 +31,9 @@ export const Station = ({ station }: { station: StationI }) => {
   return (
     <MDBCol>
       <MDBCard className="h-100">
-        <MDBCardHeader className="text-center">{station.name}</MDBCardHeader>
+        <MDBCardHeader className="text-center">
+          <Link to={station.id.toString()}>{station.name}</Link>
+        </MDBCardHeader>
         <MDBCardBody>
           <MDBTable small>
             <MDBTableBody>

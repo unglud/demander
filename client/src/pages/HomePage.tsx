@@ -1,5 +1,4 @@
 import { Header } from "../components/Header";
-import { MDBContainer } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
 import { StationsList } from "../components/StationsList";
 import { Loading } from "../components/Loading";
@@ -23,11 +22,12 @@ export const HomePage = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
   return (
-    <MDBContainer>
+    <>
       <Header />
       {!isLoading && <StationsList stations={stations} />}
       {isLoading && <Loading />}
-    </MDBContainer>
+    </>
   );
 };

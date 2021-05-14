@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\StationCalendarController;
 use App\Repository\StationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,7 +13,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=StationRepository::class)
  */
-#[ApiResource(denormalizationContext: ["groups" => ["write"]], normalizationContext: ["groups" => ["read"]])]
+#[ApiResource(/*itemOperations: [
+    "get",
+    "get_calendar" => [
+        "method"          => "GET",
+        "path"            => "/stations/{id}/calendar",
+        "controller"      => StationCalendarController::class
+    ]
+], */denormalizationContext: ["groups" => ["write"]], normalizationContext: ["groups" => ["read"]])]
 class Station extends Location
 {
     /**

@@ -35,7 +35,6 @@ abstract class Location
      * @ORM\OneToMany(targetEntity=Transport::class, mappedBy="location", orphanRemoval=true)
      * @Groups({"read"})
      */
-    // @ApiProperty(attributes={"fetchEager": true})
     private $transports;
 
     public function __construct()
@@ -53,7 +52,7 @@ abstract class Location
     /**
      * @return Collection|Equipment[]
      */
-    public function getEquipment(): Collection
+    public function getEquipment(): Collection|null
     {
         return $this->equipment;
     }

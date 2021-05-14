@@ -21,3 +21,4 @@ This little planner allow you see what equipment stations have and will have in 
 - DB query not optimised and left as is
 - Cache function is disabled, but of course there are multiple places where application will benefit from it
 - App delivered as is without proper delivery platform such as docker or what not
+- API Endpoint not cleaned up. There if far more open endpoint than need to be
