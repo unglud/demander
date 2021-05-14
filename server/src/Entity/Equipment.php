@@ -5,11 +5,12 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\EquipmentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=EquipmentRepository::class)
  */
-#[ApiResource]
+#[ApiResource(denormalizationContext: ["groups" => ["write"]], normalizationContext: ["groups" => ["read"]])]
 class Equipment
 {
     /**
@@ -21,11 +22,13 @@ class Equipment
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"read"})
      */
     private $amount;
 

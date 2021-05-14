@@ -11,9 +11,22 @@ import React from "react";
 export interface StationI {
   id: number;
   name: string;
+  equipment:[{
+    name: string;
+    amount: number;
+  }],
+  transports: string[]
 }
 
 export const Station = ({ station }: { station: StationI }) => {
+  
+  const list = station.equipment.map((item, index) => (
+    <tr key={index}>
+      <th scope="row">{item.name}</th>
+      <td>{item.amount}</td>
+    </tr>
+  ));
+  
   return (
     <MDBCol>
       <MDBCard className="h-100">
@@ -23,16 +36,9 @@ export const Station = ({ station }: { station: StationI }) => {
             <MDBTableBody>
               <tr>
                 <th scope="row">Vans</th>
-                <td>2</td>
+                <td>{station.transports.length}</td>
               </tr>
-              <tr>
-                <th scope="row">Toilets</th>
-                <td>3</td>
-              </tr>
-              <tr>
-                <th scope="row">Sleeping bags</th>
-                <td>5</td>
-              </tr>
+              {list}
             </MDBTableBody>
           </MDBTable>
         </MDBCardBody>

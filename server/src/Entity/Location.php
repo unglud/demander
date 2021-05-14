@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use App\Repository\LocationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=LocationRepository::class)
@@ -19,17 +21,21 @@ abstract class Location
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"read"})
      */
     private $id;
 
     /**
      * @ORM\OneToMany(targetEntity=Equipment::class, mappedBy="location", orphanRemoval=true)
+     * @Groups({"read"})
      */
     private $equipment;
 
     /**
      * @ORM\OneToMany(targetEntity=Transport::class, mappedBy="location", orphanRemoval=true)
+     * @Groups({"read"})
      */
+    // @ApiProperty(attributes={"fetchEager": true})
     private $transports;
 
     public function __construct()
