@@ -20,35 +20,32 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
-     /**
-      * @return ArrayCollection Returns an array of Order objects
-      */
+    /**
+     * @return ArrayCollection Returns an array of Order objects
+     */
 
     public function findUnfinishedIncomingOrdersFor($id)
     {
-        $result =  $this->createQueryBuilder('o')
+        return $this->createQueryBuilder('o')
             ->andWhere('o.end_location = :id')
             ->andWhere('o.end_date > :today')
             ->setParameter('id', $id)
             ->setParameter('today', new \DateTime())
             ->orderBy('o.end_date', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
-
-        return $result;
+            ->getResult();
     }
 
-
-    /*
-    public function findOneBySomeField($value): ?Order
+    public function findUnfinishedOutgoingOrdersFor($id)
     {
         return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('o.start_location = :id')
+            ->andWhere('o.start_date >= :today')
+            ->setParameter('id', $id)
+            ->setParameter('today', new \DateTime())
+            ->orderBy('o.end_date', 'ASC')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult();
     }
-    */
+
 }

@@ -16,11 +16,11 @@ class AppFixtures extends Fixture
     {
         $generator = Factory::create();
 
-        $maxNumberOfStations = 4;
-        $maxItemsAmount = 10;
+        $maxNumberOfStations = 5;
+        $maxItemsAmount = 20;
         $maxItemsPerOrder = 2;
-        $maxTransportPerStation = 10;
-        $numberOfOrders = 1;
+        $maxTransportPerStation = 20;
+        $numberOfOrders = 20;
         $items = [
             'Toilet',
             'Bed sheets',
@@ -29,10 +29,8 @@ class AppFixtures extends Fixture
             'Chair'
         ];
 
-        $limit = $generator->numberBetween(2, $maxNumberOfStations);
-
         $stations = [];
-        for ($i = 0; $i < $limit; $i++) {
+        for ($i = 0; $i < $maxNumberOfStations; $i++) {
             $station = new Station();
             $station->setName($generator->city);
             array_push($stations, $station);
@@ -63,8 +61,8 @@ class AppFixtures extends Fixture
 
             $startInFeature = $generator->boolean;
 
-            $startDate = $generator->numberBetween(1, 90) * $startInFeature ? 1 : -1;
-            $interval = $generator->numberBetween(1, 90);
+            $startDate = $generator->numberBetween(1, 30) * $startInFeature ? 1 : -1;
+            $interval = $generator->numberBetween(1, 30);
 
             $start = $generator->dateTimeBetween("$startDate days", "+ $interval days");
             $end = clone $start;

@@ -5,6 +5,7 @@ import axios from "axios";
 import { config } from "../config";
 import { Loading } from "../components/Loading";
 import { CalendarList } from "../components/CalendarList";
+import { MDBTypography } from "mdb-react-ui-kit";
 
 export const StationPage = () => {
   const { stationId } = useParams<{ stationId: string }>();
@@ -32,6 +33,9 @@ export const StationPage = () => {
   return (
     <>
       <Navigation />
+      <MDBTypography note noteColor='primary'>
+        Number in <strong>(brackets)</strong> equals to number of items in order which will arrive to this station
+      </MDBTypography>
       {!isLoading && <CalendarList calendars={calendars} />}
       {isLoading && <Loading />}
     </>

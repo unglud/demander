@@ -7,5 +7,5 @@ export const CalendarList = ({ calendars }: { calendars: CalendarI[] }) => {
     <Calendar key={index} day={day}/>
   ));
 
-  return <MDBRow className="row-cols-1 row-cols-md-3 g-4">{list}</MDBRow>;
+  return <MDBRow className="row-cols-1 row-cols-md-4 g-4">{list}</MDBRow>;
 };
