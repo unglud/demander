@@ -3,6 +3,22 @@
 ## Description
 This little planner allow you see what equipment stations have and will have in the future.
 
+## Setup
+1. Put password for DB in `server/.env`
+2.
+```
+cd server
+composer install
+bin/console d:d:c && bin/console d:m:m && bin/console d:f:l
+cd ../client/ && npm install
+cd ../server
+```
+3. Run server with `php -S 127.0.0.1:8000 -t public`
+4. Run client in different terminal tab `cd client/ && npm start`
+
+### Client 
+http://localhost:3000/
+
 ### Simple HTML view
 http://localhost:8000/admin
 
