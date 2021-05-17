@@ -15,6 +15,7 @@
         "doctrine/orm": "^2.8",
         "easycorp/easyadmin-bundle": "^3.3",
         "nelmio/cors-bundle": "^2.1",
+        "nesbot/carbon": "^2.48",
         "phpdocumentor/reflection-docblock": "^5.2",
         "sensio/framework-extra-bundle": "^6.1",
         "symfony/asset": "5.2.*",
