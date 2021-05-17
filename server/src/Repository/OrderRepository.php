@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,22 +20,25 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
-    // /**
-    //  * @return Order[] Returns an array of Order objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return ArrayCollection Returns an array of Order objects
+      */
+
+    public function findUnfinishedIncomingOrdersFor($id)
     {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('o.id', 'ASC')
-            ->setMaxResults(10)
+        $result =  $this->createQueryBuilder('o')
+            ->andWhere('o.end_location = :id')
+            ->andWhere('o.end_date > :today')
+            ->setParameter('id', $id)
+            ->setParameter('today', new \DateTime())
+            ->orderBy('o.end_date', 'ASC')
             ->getQuery()
             ->getResult()
         ;
+
+        return $result;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Order

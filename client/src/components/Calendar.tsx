@@ -11,6 +11,7 @@ import React from "react";
 export interface CalendarI {
   id: number;
   date: string;
+  weekend: boolean;
   equipment: [
     {
       name: string;
@@ -30,8 +31,8 @@ export const Calendar = ({ day }: { day: CalendarI }) => {
 
   return (
     <MDBCol>
-      <MDBCard className="h-100">
-        <MDBCardHeader className="text-center">{day.date}</MDBCardHeader>
+      <MDBCard className="h-100" border={day.weekend ? "danger" : ""}>
+        <MDBCardHeader className={`text-center ${day.weekend ? "text-danger" : ""}`}>{day.date}</MDBCardHeader>
         <MDBCardBody>
           <MDBTable small>
             <MDBTableBody>

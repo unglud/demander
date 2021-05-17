@@ -26,13 +26,13 @@ abstract class Location
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Equipment::class, mappedBy="location", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Equipment::class, mappedBy="location", orphanRemoval=true, fetch="EAGER")
      * @Groups({"read"})
      */
     private $equipment;
 
     /**
-     * @ORM\OneToMany(targetEntity=Transport::class, mappedBy="location", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Transport::class, mappedBy="location", orphanRemoval=true, fetch="EAGER")
      * @Groups({"read"})
      */
     private $transports;
