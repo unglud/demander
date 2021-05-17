@@ -12,27 +12,26 @@ export interface CalendarI {
   id: number;
   date: string;
   weekend: boolean;
-  equipment: [
-    {
-      name: string;
-      amount: number;
-    }
-  ];
+  equipment: { [key: string]: string };
   transports: number;
 }
 
 export const Calendar = ({ day }: { day: CalendarI }) => {
-  const list = day.equipment?.map((item, index) => (
+  const list = Object.entries(day.equipment).map((item, index) => (
     <tr key={index}>
-      <th scope="row">{item.name}</th>
-      <td>{item.amount}</td>
+      <th scope="row">{item[0]}</th>
+      <td>{item[1]}</td>
     </tr>
   ));
 
   return (
     <MDBCol>
       <MDBCard className="h-100" border={day.weekend ? "danger" : ""}>
-        <MDBCardHeader className={`text-center ${day.weekend ? "text-danger" : ""}`}>{day.date}</MDBCardHeader>
+        <MDBCardHeader
+          className={`text-center ${day.weekend ? "text-danger" : ""}`}
+        >
+          {day.date}
+        </MDBCardHeader>
         <MDBCardBody>
           <MDBTable small>
             <MDBTableBody>
